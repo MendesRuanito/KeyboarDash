@@ -256,8 +256,8 @@
             if (bloco.y - 430 > plataforma.altura || bloco.y - 430 > plataforma2.altura) {
                 if (bloco.x > plataforma.x - 40 && plataforma.x > 40 || bloco.x > plataforma2.x - 40 && plataforma2.x > 40) {
                     highScore();
-                    alert("Você Perdeu, Pontuação: " + pontos);
                     document.location.reload(true);
+                    alert("Você Perdeu, Pontuação: " + pontos);
                 }
             }
         }
