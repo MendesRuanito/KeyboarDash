@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Exemplo6</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <script type="text/javascript">
+        // Variaveis do jogo
+        var canvas, ctx, Altura, Largura, frame = 0;
+        var pontos = 0;
+        var a, b = false;
+        var textoTecla, tecla;
+        //objetos do jogo
+        var chao = {
+                y: 450,
+                altura: 150,
+                cor: "#16a000",
+                desenhar: function() {
+                    ctx.fillStyle = this.cor;
+                    ctx.fillRect(0, this.y, Largura, this.altura);
+                }
+            },
+            sol = {
+                y: 50,
+                altura: 100,
+                cor: "yellow",
+                drawSun: function() {
+                    ctx.fillStyle = this.cor;
+                    ctx.fillRect(100, this.y, 100, this.altura);
+                }
+            },
+            plataforma = {
+                y: chao.y,
+                x: 1000,
+                altura: -100,
+                cor: "yellow",
+                drawPlatform: function() {
+                    ctx.fillStyle = this.cor;
+                    ctx.fillRect(this.x, this.y, 30, this.altura);
+                }
+            },
+            plataforma2 = {
+                y: chao.y,
+                x: 1000,
+                altura: -100,
+                cor: "blue",
+                drawPlatform2: function() {
+                    ctx.fillStyle = this.cor;
+                    ctx.fillRect(this.x, this.y, 30, this.altura);
+                }
+            },
+            bloco = {
+                x: 77,
+                y: 0,
+                altura: 40,
+                largura: 40,
+                cor: "#9b59b6",
+                gravidade: 2,
+                velocidade: 0,
+                forcaDoPulo: 30,
+                pula: function() {
+                    this.velocidade = -this.forcaDoPulo;
+                },
+                atualizar: function() {
+                    this.velocidade += this.gravidade;
+                    this.y += this.velocidade;
+                    //colisão com o chão
+                    if (this.y > chao.y - this.altura) {
+                        this.y = chao.y - this.altura;
+                    }
+                },
+                desenhar: function() {
+                    ctx.fillStyle = this.cor;
+                    ctx.fillRect(this.x, this.y, this.largura, this.altura);
+                }
+            };
+
+        //Funcões Principal
+        function principal() {
+            //pega a largura total da tela
+            Largura = window.innerWidth;
+            //pega a altura total da tela
+            Altura = window.innerHeight;
+
+            //se a largura for maior que 800 a largura é redefinida para 1000
+            //obs essa condição sempre sera true para desktop, portanto a largura e altura sempre sera 600px
+            if (Largura >= 800) {
+                Largura = 1000;
+                Altura = 600;
+            }
+            //Criacao do elemento do tipo canvas
+            canvas = document.createElement("canvas");
+            //Define a largura do canvas
+            canvas.width = Largura;
+            //Define a altura do canvas
+            canvas.height = Altura;
+            //Pega o contexto 2d para o canvas
+            ctx = canvas.getContext("2d");
+            document.body.appendChild(canvas);
+            //Adiciona o texto da pagina inicial
+            ctx.fillStyle = "white";
+            ctx.font = "80pt Helvetica";
+            ctx.fillText("KeyboarDash", 170, 300);
+            ctx.font = "20pt Helvetica";
+            ctx.fillText("Press 'Enter' to Start...", 360, 400);
+        }
+        //Cria o evento de tecla, para o jogo e para o menu, respectivamente    
+        document.addEventListener('keydown', keyDown);
+        document.addEventListener('keydown', keyDown1);
+        //Verifica se a tecla pressionada corresponde com a da tela, a partir daí o personagem pula
+        function keyDown(e) {
+            if (e.keyCode == tecla) {
+                if (bloco.y > 400) {
+                    bloco.pula();
+                }
+            }
+        }
+        //Função que faz a movimentação da plataforma 1
+        function movePlataforma() {
+            plataforma.x -= 7;
+            if (plataforma.x < -30) {
+                plataforma.x = 1000;
+                plataforma.altura = -Math.random() * (160 - 80) - 80;
+                pontos++;
+                teclaAleatoria();
+            }
+        }
+        //Função que faz a movimentação da plataforma 2
+        function movePlataforma2() {
+            plataforma2.x -= 7;
+            if (plataforma2.x < -30) {
+                plataforma2.x = 1000;
+                plataforma2.altura = -Math.random() * (160 - 40) - 80;
+                pontos++;
+                teclaAleatoria();
+            }
+        }
+        //Função que gera uma tecla aleatória, e seleciona o texto da tecla correspondente
+        function teclaAleatoria() {
+            min = Math.ceil(65);
+            max = Math.floor(90);
+            //Gera um numero aleatorio
+            tecla = Math.floor(Math.random() * (max - min + 1)) + min;
+            //Seleciona o texto da tecla        
+            switch (tecla) {
+                case 65:
+                    this.textoTecla = "A";
+                    break;
+                case 66:
+                    this.textoTecla = "B";
+                    break;
+                case 67:
+                    this.textoTecla = "C";
+                    break
+                case 68:
+                    this.textoTecla = "D";
+                    break;
+                case 69:
+                    this.textoTecla = "E";
+                    break;
+                case 70:
+                    this.textoTecla = "F";
+                    break;
+                case 71:
+                    this.textoTecla = "G";
+                    break;
+                case 72:
+                    this.textoTecla = "H";
+                    break;
+                case 73:
+                    this.textoTecla = "I";
+                    break;
+                case 74:
+                    this.textoTecla = "J";
+                    break;
+                case 75:
+                    this.textoTecla = "K";
+                    break;
+                case 76:
+                    this.textoTecla = "L";
+                    break;
+                case 77:
+                    this.textoTecla = "M";
+                    break
+                case 78:
+                    this.textoTecla = "N";
+                    break;
+                case 79:
+                    this.textoTecla = "O";
+                    break;
+                case 80:
+                    this.textoTecla = "P";
+                    break;
+                case 81:
+                    this.textoTecla = "Q";
+                    break;
+                case 82:
+                    this.textoTecla = "R";
+                    break;
+                case 83:
+                    this.textoTecla = "S";
+                    break;
+                case 84:
+                    this.textoTecla = "T";
+                    break;
+                case 85:
+                    this.textoTecla = "U";
+                    break;
+                case 86:
+                    this.textoTecla = "V";
+                    break;
+                case 87:
+                    this.textoTecla = "W";
+                    break;
+                case 88:
+                    this.textoTecla = "X";
+                    break;
+                case 89:
+                    this.textoTecla = "Y";
+                    break;
+                case 90:
+                    this.textoTecla = "Z";
+                    break;
+            }
+        }
+        //Função que armazena o HighScore
+        function set(key, data) {
+            if (window.hasOwnProperty('localStorage')) {
+                window.localStorage.setItem(key, data);
+            }
+        }
+        //Função que vizualiza o HighScore
+        function get(key) {
+            if (window.hasOwnProperty('localStorage')) {
+                return window.localStorage.getItem(key);
+            }
+        }
+        //Função que desenha as pontuações na tela
+        function desenhaPontos() {
+            ctx.fillStyle = "green";
+            ctx.font = "20pt Helvetica ";
+            ctx.fillText("Your Score:  " + pontos, 800, 40);
+            ctx.fillText("High Score:  " + get(1), 798, 70);
+        }
+        //Função que desenha a tecla que o jogador tera que apertar para pular
+        function mostraTecla() {
+            ctx.fillStyle = "green";
+            ctx.font = "50pt Helvetica ";
+            ctx.fillText(textoTecla, 480, 100);
+        }
+        //Função que faz a colisão do bloco com as paredes
+        function colisao() {
+            if (bloco.y - 430 > plataforma.altura || bloco.y - 430 > plataforma2.altura) {
+                if (bloco.x > plataforma.x - 40 && plataforma.x > 40 || bloco.x > plataforma2.x - 40 && plataforma2.x > 40) {
+                    highScore();
+                    alert("Você Perdeu, Pontuação: " + pontos);
+                    document.location.reload(true);
+                }
+            }
+        }
+        //Funcção que inicia o jogo
+        function roda() {
+            //chama a funcao atualizar
+            atualizar();
+            //chama a funcao desenha
+            desenhar();
+            //a cada segundo a funcao roda sera chamada
+            window.requestAnimationFrame(roda);
+        }
+        //Função que atualiza os frames do jogo
+        function atualizar() {
+            //incrementa mais 1 ao nosso frame
+            frame++;
+            bloco.atualizar();
+            movePlataforma();
+            if (plataforma.x < 500) {
+                a = true;
+            };
+            if (a) {
+                movePlataforma2();
+            };
+        }
+        //Função que verifica o HighScore
+        function highScore() {
+            if (get(1) < pontos) {
+                set(1, pontos)
+            }
+        }
+        //Função que desenha o jogo
+        function desenhar() {
+            //define a cor do retangulo que queremos desenhar
+            ctx.fillStyle = "#50beff";
+            //desenha um retangulo da x = 0 até o tamanho total da largura, e de y=0 até o tamanho total da altura
+            ctx.fillRect(0, 0, Largura, Altura);
+            desenhaPontos();
+            mostraTecla();
+            plataforma.drawPlatform();
+            plataforma2.drawPlatform2()
+            chao.desenhar();
+            sol.drawSun();
+            bloco.desenhar();
+            colisao();
+        }
+
+        //inicia o jogo
+        teclaAleatoria();
+        principal();
+        function keyDown1(e) {
+            if (e.keyCode == 13) {
+                if (this.b) {} else {
+                    roda();
+                    this.b = true;
+                }
+            }
+        };
+
+    </script>
+
+</body>
+
+</html>
