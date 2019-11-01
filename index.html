@@ -12,6 +12,7 @@
         var pontos = 0;
         var a, b = false;
         var textoTecla, tecla;
+		var x = false;
         //objetos do jogo
         var chao = {
                 y: 450,
@@ -258,9 +259,13 @@
         function colisaop1() {
 			if ((bloco.x > plataforma.x - 40) && (plataforma.x > 40)) {
 				if (bloco.y - 430 > plataforma.altura) {
+				
+					x = true;
                     highScore();
-                    document.location.reload(true);
+					document.location.reload(true);
+					//ctx.clearRect(0, 0, canvas.width, canvas.height);
                     alert("Você Perdeu, Pontuação: " + pontos);
+
                 }
            }
         }
@@ -268,20 +273,25 @@
 		function colisaop2() {
 			if ((bloco.x > plataforma2.x - 40) && (plataforma2.x > 40)) {
 				if (bloco.y - 430 > plataforma2.altura) {
+					x = true;
                     highScore();
-                    document.location.reload(true);
+					document.location.reload(true);
+					//ctx.clearRect(0, 0, canvas.width, canvas.height);
                     alert("Você Perdeu, Pontuação: " + pontos);
                 }
            }
         }
         //Funcção que inicia o jogo
         function roda() {
+				if (!x){
             //chama a funcao atualizar
+					
             atualizar();
             //chama a funcao desenha
-            desenhar();
+			desenhar();
             //a cada segundo a funcao roda sera chamada
             window.requestAnimationFrame(roda);
+			}
         }
         //Função que atualiza os frames do jogo
         function atualizar() {
