@@ -1,9 +1,8 @@
 <!DOCTYPE html>
 <html>
-
 <head>
     <meta charset="utf-8">
-    <title>Exemplo6</title>
+    <title>KeyboarDash</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -89,7 +88,7 @@
             //obs essa condição sempre sera true para desktop, portanto a largura e altura sempre sera 600px
             if (Largura >= 800) {
                 Largura = 1000;
-                Altura = 600;
+                Altura = 550;
             }
             //Criacao do elemento do tipo canvas
             canvas = document.createElement("canvas");
@@ -123,7 +122,7 @@
             plataforma.x -= 7;
             if (plataforma.x < -30) {
                 plataforma.x = 1000;
-                plataforma.altura = -Math.random() * (160 - 80) - 80;
+                plataforma.altura = - getRandomIntInclusive(80, 160)
                 pontos++;
                 teclaAleatoria();
             }
@@ -133,17 +132,21 @@
             plataforma2.x -= 7;
             if (plataforma2.x < -30) {
                 plataforma2.x = 1000;
-                plataforma2.altura = -Math.random() * (160 - 40) - 80;
+                plataforma2.altura = - getRandomIntInclusive(80, 160)
                 pontos++;
                 teclaAleatoria();
             }
         }
-        //Função que gera uma tecla aleatória, e seleciona o texto da tecla correspondente
+		//Função que gera um numero inteiro aleatorio
+		function getRandomIntInclusive(min, max) {
+			min = Math.ceil(min);
+			max = Math.floor(max);
+			return Math.floor(Math.random() * (max - min + 1)) + min;
+		}
+        //Função que seleciona o texto da tecla correspondente
         function teclaAleatoria() {
-            min = Math.ceil(65);
-            max = Math.floor(90);
             //Gera um numero aleatorio
-            tecla = Math.floor(Math.random() * (max - min + 1)) + min;
+            tecla = getRandomIntInclusive(65, 90);
             //Seleciona o texto da tecla        
             switch (tecla) {
                 case 65:
@@ -251,15 +254,25 @@
             ctx.font = "50pt Helvetica ";
             ctx.fillText(textoTecla, 480, 100);
         }
-        //Função que faz a colisão do bloco com as paredes
-        function colisao() {
-            if (bloco.y - 430 > plataforma.altura || bloco.y - 430 > plataforma2.altura) {
-                if (bloco.x > plataforma.x - 40 && plataforma.x > 40 || bloco.x > plataforma2.x - 40 && plataforma2.x > 40) {
+        //Função que faz a colisão do bloco com as paredes1
+        function colisaop1() {
+			if ((bloco.x > plataforma.x - 40) && (plataforma.x > 40)) {
+				if (bloco.y - 430 > plataforma.altura) {
                     highScore();
                     document.location.reload(true);
                     alert("Você Perdeu, Pontuação: " + pontos);
                 }
-            }
+           }
+        }
+		//Função que faz a colisão do bloco com as paredes2
+		function colisaop2() {
+			if ((bloco.x > plataforma2.x - 40) && (plataforma2.x > 40)) {
+				if (bloco.y - 430 > plataforma2.altura) {
+                    highScore();
+                    document.location.reload(true);
+                    alert("Você Perdeu, Pontuação: " + pontos);
+                }
+           }
         }
         //Funcção que inicia o jogo
         function roda() {
@@ -295,6 +308,8 @@
             ctx.fillStyle = "#50beff";
             //desenha um retangulo da x = 0 até o tamanho total da largura, e de y=0 até o tamanho total da altura
             ctx.fillRect(0, 0, Largura, Altura);
+			ctx.font = "30px Arial";
+			ctx.fillText("Hello World", 300, 300);
             desenhaPontos();
             mostraTecla();
             plataforma.drawPlatform();
@@ -302,7 +317,8 @@
             chao.desenhar();
             sol.drawSun();
             bloco.desenhar();
-            colisao();
+            colisaop1();
+			colisaop2();
         }
 
         //inicia o jogo
@@ -318,7 +334,5 @@
         };
 
     </script>
-
 </body>
-
 </html>
